@@ -1,0 +1,7 @@
+-r requirements.txt
+pytest
+black
+flake8
+pybind11>=2.10.0
+ninja
+cmake>=3.18

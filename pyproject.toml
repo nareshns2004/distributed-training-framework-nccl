@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "cmake>=3.18", "ninja", "pybind11>=2.10.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dtf"
+version = "0.1.0"
+description = "Distributed Training Framework over NCCL"
+authors = [{ name = "Naresh", email = "nareshns2004@example.com" }]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "torch>=2.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]

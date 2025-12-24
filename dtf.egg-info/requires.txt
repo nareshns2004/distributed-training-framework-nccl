@@ -1,0 +1,7 @@
+numpy
+torch>=2.0.0
+
+[dev]
+pytest
+black
+flake8
