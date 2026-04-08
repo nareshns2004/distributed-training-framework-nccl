@@ -1,0 +1,20 @@
+distributed-training-framework-nccl
+Copyright 2025 Your Name / Your Organization
+
+This product includes software developed at Your Organization.
+
+This software makes use of the following third-party libraries:
+
+- NCCL (NVIDIA Collective Communications Library)
+  Copyright (c) 2015-2024, NVIDIA Corporation
+  Licensed under the BSD 3-Clause License
+
+- pybind11
+  Copyright (c) 2016 Wenzel Jakob
+  Licensed under the BSD-style License
+
+- PyTorch
+  Copyright (c) 2016-present, Facebook Inc.
+  Licensed under the BSD 3-Clause License
+
+See the individual LICENSE files in each dependency for full terms.
