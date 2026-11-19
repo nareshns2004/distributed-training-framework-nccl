@@ -9,8 +9,9 @@ Thank you for your interest in contributing to `distributed-training-framework-n
 
 ```bash
 pip install -e ".[dev]"
-pre-commit install
 ```
+
+> The project is an early scaffold; see the README's status section before starting work.
 
 3. Create a branch for your change:
 
@@ -50,19 +51,13 @@ ruff dtf/ tests/
 bash scripts/format.sh   # runs clang-format
 ```
 
-Or run all formatters at once via pre-commit:
-
-```bash
-pre-commit run --all-files
-```
-
 ## Contribution Guidelines
 
 ### What we welcome
 
 - Bug fixes with a clear reproduction case
-- Performance improvements with benchmark data
-- New collective operations or compression algorithms
+- Performance improvements with benchmark data produced by a committed script
+- NCCL failure-handling work (non-blocking init, async errors, abort)
 - Documentation improvements
 - Test coverage additions
 
@@ -88,7 +83,7 @@ For larger changes — new parallelism strategies, breaking API changes, signifi
 
 Types: `feat`, `fix`, `perf`, `refactor`, `test`, `docs`, `build`, `ci`.
 
-Example: `perf: fuse cast and quantize kernels in compression.cu`
+Example: `fix: abort the communicator instead of destroying it after an NCCL error`
 
 ## Reporting Bugs
 
@@ -96,7 +91,7 @@ Please include: OS, CUDA version, NCCL version, Python version, a minimal reprod
 
 ## Security
 
-Do not open public issues for security vulnerabilities. Email [security@your-org.com](mailto:security@your-org.com) instead.
+Do not open public issues for security vulnerabilities. Report them privately through GitHub's "Report a vulnerability" button on the Security tab instead.
 
 ## License
 
