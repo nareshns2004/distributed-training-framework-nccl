@@ -33,11 +33,11 @@ cd ..
 ### Running tests
 
 ```bash
-# Unit tests (no GPU required)
-pytest tests/unit/
+# CPU tests (no GPU required)
+pytest -m "not gpu"
 
-# Integration tests (requires 2+ GPUs)
-bash scripts/run_tests.sh
+# GPU tests (requires 2+ GPUs)
+pytest -m gpu
 ```
 
 ### Code formatting
@@ -45,7 +45,7 @@ bash scripts/run_tests.sh
 ```bash
 # Python
 black dtf/ tests/
-ruff dtf/ tests/
+ruff check dtf/ tests/
 
 # C++/CUDA
 bash scripts/format.sh   # runs clang-format
@@ -63,7 +63,7 @@ bash scripts/format.sh   # runs clang-format
 
 ### What to discuss first
 
-For larger changes — new parallelism strategies, breaking API changes, significant architecture shifts — please open an issue first to align on direction before writing code.
+For larger changes (new NCCL APIs, breaking API changes, architecture shifts), read [docs/design.md](docs/design.md) and open an issue first to align on direction before writing code.
 
 ### Pull request process
 

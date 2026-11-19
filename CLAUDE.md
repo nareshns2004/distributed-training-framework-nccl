@@ -1,23 +1,27 @@
 # dtf: NCCL layer for fault-tolerant training (guidance for Claude Code)
 
 ## Status and goal
-This repo is an early scaffold: about 250 lines of C++ wrapping NCCL, with pybind11
-bindings. Every Python module, test, example and doc is an empty placeholder (see
-PROJECT_STRUCTURE.md).
+A fault-aware NCCL communicator (non-blocking init with deadlines, async error polling,
+abort-all registry, safe teardown, split), plus failure experiments whose written
+findings feed the goodput orchestrator
+(`goodput-fault-tolerant-training-orchestrator`). Today only a minimal C++ wrapper
+exists. Read docs/design.md and docs/design-decisions.md before changing anything in
+dtf/ or csrc/.
 
-The direction is failure handling for NCCL-based training. We WRAP PyTorch + NCCL;
-we do NOT re-implement DDP/FSDP, tensor or pipeline parallelism, gradient
-compression or custom all-reduce kernels.
+We WRAP PyTorch + NCCL; we do NOT re-implement DDP/FSDP, tensor or pipeline
+parallelism, gradient compression or custom all-reduce kernels. Watchdog, fault
+injection, classification, checkpointing and restart belong to goodput, not here
+(ADR-3).
 
-The scope relative to the separate `goodput-fault-tolerant-training-orchestrator`
-repo is not decided yet. Until `docs/design.md` and `docs/design-decisions.md` exist,
-do not write feature code in `dtf/` or `csrc/`. Docs, hygiene and build fixes are fine.
+Build work (M2, M3) starts when goodput starts its M2 (ADR-8). Don't start it
+unprompted.
 
 ## Layout
-- csrc/       thin C++ NCCL layer (the only real code today)
-- dtf/        Python package (empty placeholders)
-- tests/      empty placeholders; real tests arrive with the first build PR
-- bench/      (to be created) scripts that generate bench/RESULTS.md
+- csrc/            thin C++ NCCL layer (the only code today)
+- dtf/             Python package; hosts the compiled dtf_C extension
+- docs/            design.md, design-decisions.md; findings/ (one file per experiment X1–X8)
+- tests/           (M2) CPU tests; GPU tests marked `gpu`
+- bench/           (M3) scripts that generate bench/RESULTS.md
 
 ## Commands (target; most don't work until the build/CI PR lands)
 - pip install -e ".[dev]"   # builds dtf_C via CMake (needs CUDA + NCCL)

@@ -12,16 +12,22 @@ else lives under **Planned**.
 ### Added
 - `CLAUDE.md` with project rules: no hand-written benchmark numbers or feature claims,
   and NCCL error-path rules.
+- `docs/design.md` and `docs/design-decisions.md` (ADR-1 to ADR-8). They scope the repo
+  to a fault-aware NCCL layer plus failure experiments for the goodput orchestrator.
+- A `gpu` pytest marker.
 
 ### Changed
-- Rewrote the README as an honest status page: what exists, what doesn't, known
-  issues and direction.
-- `PROJECT_STRUCTURE.md` now marks empty placeholder files and lists only files that
-  exist.
-- `setup.py` no longer packages `examples`.
+- Rewrote the README as an honest status page: scope, what exists, known issues and
+  roadmap.
+- `PROJECT_STRUCTURE.md` lists only files that exist.
+- `setup.py` packages only `dtf`; `scripts/run_tests.sh` and `scripts/format.sh` match
+  the new layout.
 - Fixed placeholder metadata (clone URL, author email, NOTICE, security contact).
 
 ### Removed
+- 40 empty placeholder files from the earlier plan: `dtf/` submodules (parallelism,
+  compression, checkpoint, utils), `launcher/`, `examples/`, `tests/`, the empty
+  `docs/*.md`, `compression.h`, `compression.cu` and `cast_fp16_bf16.cu`.
 - The README benchmark table (GPT-2 1.5B and LLaMA-7B throughput and scaling). No code
   in this repository produced those numbers.
 - The README quick-start, which used APIs that don't exist (`dtf.init`,

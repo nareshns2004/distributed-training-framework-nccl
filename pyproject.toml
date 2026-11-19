@@ -26,3 +26,6 @@ addopts = "-ra -q"
 testpaths = [
     "tests",
 ]
+markers = [
+    "gpu: needs CUDA GPUs and NCCL; run only on a GPU host",
+]

@@ -1,11 +1,8 @@
 # Project Structure
 
-Files marked **(empty)** are zero-byte placeholders left from an earlier, broader plan.
-They are not features. See the README for what is implemented.
-
 ```
 distributed-training-framework-nccl/
-├── README.md                  # Honest status page
+├── README.md                  # Status, scope and roadmap
 ├── CLAUDE.md                  # Rules for Claude Code (no hand-written claims)
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
@@ -13,47 +10,40 @@ distributed-training-framework-nccl/
 ├── NOTICE
 ├── .gitignore
 │
-├── CMakeLists.txt             # Top-level CMake build (known issues; see README)
+├── CMakeLists.txt             # Top-level CMake build (known issues; fixed in M2)
 ├── setup.py                   # Python package build; calls CMake
 ├── pyproject.toml
 ├── requirements.txt
 ├── requirements-dev.txt
 │
-├── csrc/                      # C++/CUDA source: the only real code
+├── docs/
+│   ├── design.md              # Scope, architecture, failure experiments, measurements
+│   └── design-decisions.md    # ADR-1 … ADR-8
+│
+├── csrc/                      # C++/CUDA source: the only code today
 │   ├── CMakeLists.txt
 │   ├── include/dtf/
 │   │   ├── communicator.h     # NCCL communicator wrapper
 │   │   ├── collective_ops.h   # all-reduce, broadcast, all-gather
 │   │   ├── process_group.h    # Owns a Communicator
-│   │   ├── utils.h            # DTF_CHECK, NCCL_CHECK
-│   │   └── compression.h      # (empty)
+│   │   └── utils.h            # DTF_CHECK, NCCL_CHECK
 │   ├── core/
 │   │   ├── communicator.cpp
 │   │   ├── collective_ops.cpp
 │   │   └── process_group.cpp
 │   ├── cuda/
 │   │   ├── memory_utils.cu    # cudaMalloc / cudaFree helpers
-│   │   ├── all_reduce.cu      # comment only; defers to NCCL
-│   │   ├── compression.cu     # (empty)
-│   │   └── cast_fp16_bf16.cu  # (empty)
+│   │   └── all_reduce.cu      # comment only; defers to NCCL
 │   └── bindings/
 │       └── pybind.cpp         # dtf_C module: get_unique_id, Communicator, ProcessGroup
 │
-├── dtf/                       # Python package: every module is (empty)
-│   ├── __init__.py, distributed.py, process_group.py, collective_ops.py
-│   ├── checkpoint/            # __init__.py, save.py, load.py
-│   ├── compression/           # __init__.py, topk.py, quantize.py, powersgd.py
-│   ├── parallelism/           # __init__.py, data_parallel.py, tensor_parallel.py, pipeline_parallel.py
-│   └── utils/                 # __init__.py, env.py, logging.py, profiling.py
-│
-├── launcher/                  # __init__.py, launch.py: (empty)
-├── tests/                     # all (empty)
-│   ├── unit/                  # test_communicator, test_collective_ops, test_compression, test_checkpoint
-│   ├── integration/           # test_data_parallel, test_tensor_parallel, test_multi_node
-│   └── benchmarks/            # bench_allreduce, bench_throughput
-├── examples/                  # all (empty)
-├── docs/                      # api, architecture, benchmarks, configuration: all (empty)
+├── dtf/
+│   └── __init__.py            # empty; the compiled dtf_C extension is installed here
 │
 ├── docker/                    # Dockerfile (CUDA 11.8), Dockerfile.dev, docker-compose.yml
 └── scripts/                   # build.sh, run_tests.sh, format.sh
 ```
+
+Planned in M2–M3 (docs/design.md §7): `tests/` (CPU and GPU), `bench/` (scripts that
+write `bench/RESULTS.md`), `docs/findings/` (one write-up per failure experiment) and
+`.github/workflows/` (CI).
