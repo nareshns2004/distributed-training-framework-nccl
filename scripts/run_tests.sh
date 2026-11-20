@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Running unit tests..."
-pytest tests/unit
-
-echo "Running integration tests..."
-pytest tests/integration
-
-echo "All tests passed."
+# CPU tests by default; pass -m gpu on a GPU host for the GPU tests.
+# There are no tests yet: they arrive with milestone M2 (docs/design.md §7).
+pytest -m "not gpu" "$@"

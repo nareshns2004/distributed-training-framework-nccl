@@ -37,5 +37,5 @@ class CMakeBuild(build_ext):
 setup(
     ext_modules=[CMakeExtension("dtf.dtf_C")],
     cmdclass={"build_ext": CMakeBuild},
-    packages=["dtf", "launcher", "examples"],
+    packages=["dtf"],
 )

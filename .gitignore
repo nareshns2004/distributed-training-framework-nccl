@@ -77,3 +77,6 @@ docs/site/
 # Misc
 *.bak
 *.tmp
+
+# Local reference material (not part of the repo)
+*Master Booklet*.pdf

@@ -2,108 +2,48 @@
 
 ```
 distributed-training-framework-nccl/
-│
-├── README.md
-├── LICENSE
+├── README.md                  # Status, scope and roadmap
+├── CLAUDE.md                  # Rules for Claude Code (no hand-written claims)
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
+├── LICENSE
 ├── NOTICE
 ├── .gitignore
-├── .clang-format
-├── .pre-commit-config.yaml
 │
-├── CMakeLists.txt                    # Top-level CMake build
-├── setup.py                         # Python package build (calls CMake)
+├── CMakeLists.txt             # Top-level CMake build (known issues; fixed in M2)
+├── setup.py                   # Python package build; calls CMake
 ├── pyproject.toml
 ├── requirements.txt
 ├── requirements-dev.txt
 │
-├── csrc/                            # C++/CUDA source
+├── docs/
+│   ├── design.md              # Scope, architecture, failure experiments, measurements
+│   └── design-decisions.md    # ADR-1 … ADR-8
+│
+├── csrc/                      # C++/CUDA source: the only code today
 │   ├── CMakeLists.txt
-│   ├── include/
-│   │   ├── dtf/
-│   │   │   ├── communicator.h       # NCCL communicator wrapper
-│   │   │   ├── collective_ops.h     # AllReduce, Broadcast, etc.
-│   │   │   ├── process_group.h      # Distributed process group
-│   │   │   ├── compression.h        # Gradient compression interfaces
-│   │   │   └── utils.h
-│   │
+│   ├── include/dtf/
+│   │   ├── communicator.h     # NCCL communicator wrapper
+│   │   ├── collective_ops.h   # all-reduce, broadcast, all-gather
+│   │   ├── process_group.h    # Owns a Communicator
+│   │   └── utils.h            # DTF_CHECK, NCCL_CHECK
 │   ├── core/
 │   │   ├── communicator.cpp
 │   │   ├── collective_ops.cpp
 │   │   └── process_group.cpp
-│   │
 │   ├── cuda/
-│   │   ├── all_reduce.cu            # Custom AllReduce kernels
-│   │   ├── compression.cu           # Gradient sparsification / quantization
-│   │   ├── cast_fp16_bf16.cu        # Mixed-precision cast kernels
-│   │   └── memory_utils.cu
-│   │
+│   │   ├── memory_utils.cu    # cudaMalloc / cudaFree helpers
+│   │   └── all_reduce.cu      # comment only; defers to NCCL
 │   └── bindings/
-│       └── pybind.cpp               # pybind11 Python bindings
+│       └── pybind.cpp         # dtf_C module: get_unique_id, Communicator, ProcessGroup
 │
-├── dtf/                             # Python package
-│   ├── __init__.py
-│   ├── distributed.py               # High-level DistributedModel wrapper
-│   ├── process_group.py             # Python process group management
-│   ├── collective_ops.py            # Python collective op wrappers
-│   ├── compression/
-│   │   ├── __init__.py
-│   │   ├── topk.py                  # Top-K gradient sparsification
-│   │   ├── quantize.py              # 1-bit / 8-bit quantization
-│   │   └── powersgd.py              # PowerSGD low-rank approximation
-│   ├── parallelism/
-│   │   ├── __init__.py
-│   │   ├── data_parallel.py         # Data parallelism
-│   │   ├── tensor_parallel.py       # Tensor parallelism
-│   │   └── pipeline_parallel.py     # Pipeline parallelism
-│   ├── checkpoint/
-│   │   ├── __init__.py
-│   │   ├── save.py
-│   │   └── load.py
-│   └── utils/
-│       ├── __init__.py
-│       ├── logging.py
-│       ├── profiling.py
-│       └── env.py
+├── dtf/
+│   └── __init__.py            # empty; the compiled dtf_C extension is installed here
 │
-├── launcher/                        # dtf-launch CLI tool
-│   ├── __init__.py
-│   └── launch.py
-│
-├── tests/
-│   ├── unit/
-│   │   ├── test_communicator.py
-│   │   ├── test_collective_ops.py
-│   │   ├── test_compression.py
-│   │   └── test_checkpoint.py
-│   ├── integration/
-│   │   ├── test_data_parallel.py
-│   │   ├── test_tensor_parallel.py
-│   │   └── test_multi_node.py
-│   └── benchmarks/
-│       ├── bench_allreduce.py
-│       └── bench_throughput.py
-│
-├── examples/
-│   ├── gpt_data_parallel.py         # GPT training with data parallelism
-│   ├── llama_tensor_parallel.py     # LLaMA with tensor parallelism
-│   ├── pipeline_parallel_basic.py
-│   └── gradient_compression.py
-│
-├── docker/
-│   ├── Dockerfile
-│   ├── Dockerfile.dev
-│   └── docker-compose.yml
-│
-├── scripts/
-│   ├── build.sh
-│   ├── run_tests.sh
-│   └── format.sh
-│
-└── docs/
-    ├── architecture.md
-    ├── api.md
-    ├── configuration.md
-    └── benchmarks.md
+├── docker/                    # Dockerfile (CUDA 11.8), Dockerfile.dev, docker-compose.yml
+└── scripts/                   # build.sh, run_tests.sh, format.sh
 ```
+
+Planned in M2–M3 (docs/design.md §7): `tests/` (CPU and GPU), `bench/` (scripts that
+write `bench/RESULTS.md`), `docs/findings/` (one write-up per failure experiment) and
+`.github/workflows/` (CI).
